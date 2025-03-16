@@ -1,9 +1,12 @@
+"use client"
+import { cacheRtl } from "@/theme";
+import { CacheProvider } from "@emotion/react";
 import React, { FC, ReactNode } from "react";
-import { ThemeProvider } from "@mui/material";
-import theme from "@/theme";
 
-const Client_Providers: FC<Readonly<{ children: ReactNode }>> = ({ children }) => {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+const Client_Providers: FC<Readonly<{ children: ReactNode }>> = ({
+  children,
+}) => {
+  return <CacheProvider value={cacheRtl}>{children}</CacheProvider>
 };
 
 export default Client_Providers;
