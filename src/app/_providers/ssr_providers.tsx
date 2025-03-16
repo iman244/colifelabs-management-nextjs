@@ -9,13 +9,16 @@ import { BRANDING, NAVIGATION } from "@/app/dashboard";
 const SSR_Providers: FC<Readonly<{ children: ReactNode }>> = ({ children }) => {
   return (
     <AppRouterCacheProvider>
-        <ThemeProvider theme={theme}>
-          <React.Suspense fallback={<LinearProgress />}>
-            <NextAppProvider theme={theme} navigation={NAVIGATION} branding={BRANDING}>
-              {children}
-            </NextAppProvider>
-          </React.Suspense>
-        </ThemeProvider>
+      <React.Suspense fallback={<LinearProgress />}>
+        <NextAppProvider
+          navigation={NAVIGATION}
+          branding={BRANDING}
+        >
+          <ThemeProvider theme={theme}>
+          {children}
+          </ThemeProvider>
+        </NextAppProvider>
+      </React.Suspense>
     </AppRouterCacheProvider>
   );
 };

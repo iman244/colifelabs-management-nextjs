@@ -2,22 +2,22 @@
 import createCache from "@emotion/cache";
 import { createTheme } from "@mui/material/styles";
 import { prefixer } from "stylis";
-import rtlPlugin from 'stylis-plugin-rtl';
+import rtlPlugin from "stylis-plugin-rtl";
 
 const theme = createTheme({
-  direction: 'rtl',
-  colorSchemes: {
-    dark: true
-  },
+  direction: "rtl",
   typography: {
-    fontFamily: '"Vazirmatn", sans-serif'
-  }
+    fontFamily: '"Vazirmatn", sans-serif',
+  },
+  // colorSchemes: {
+  //   dark: true,
+  //   light: true,
+  // }
 });
 
-  export const cacheRtl = createCache({
-    key: 'muirtl',
-    stylisPlugins: [prefixer, rtlPlugin],
-  });
-  
+export const cacheRtl = createCache({
+  key: "muirtl",
+  stylisPlugins: [prefixer, rtlPlugin],
+});
 
 export default theme;

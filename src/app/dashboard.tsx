@@ -1,16 +1,30 @@
-import { Navigation } from "@toolpad/core";
+import { Box } from "@mui/material";
+import { Branding, Navigation } from "@toolpad/core";
+import Image from "next/image";
 
-export const NAVIGATION: Navigation  = [
+export const NAVIGATION: Navigation = [
   {
-    title: "Home",
-    segment: ''
+    title: "گزارش‌های مالی",
+    segment: "",
   },
   {
-    title: "About",
-    segment: 'about'
+    title: "پیام برای توسعه‌دهنده",
+    segment: "about",
   },
 ];
 
-export const BRANDING = {
+export const BRANDING: Branding = {
   title: "داشبورد مدیریت کولایف",
+  logo: (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+      }}
+    >
+      <Image src={"/logo.png"} alt="لوگو" width={24} height={24} />
+    </Box>
+  ),
 };
