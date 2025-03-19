@@ -1,15 +1,32 @@
 import { Box } from "@mui/material";
 import { Branding, Navigation } from "@toolpad/core";
 import Image from "next/image";
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import ForumIcon from '@mui/icons-material/Forum';
+import { AccountBalance, TrendingUp } from "@mui/icons-material";
 
 export const NAVIGATION: Navigation = [
   {
-    title: "گزارش‌های مالی",
-    segment: "",
+    title: "گزارش‌های بودجه",
+    segment: "reports",
+    icon: <AssessmentIcon />,
+    children: [
+      {
+        title: "صورت وضعیت مالی",
+        segment: "balance-sheet", 
+        icon: <AccountBalance />,
+      },
+      {
+        title: "صورت سود و زیان",
+        segment: "income-statement",
+        icon: <TrendingUp />,
+      },
+    ]
   },
   {
     title: "پیام برای توسعه‌دهنده",
-    segment: "about",
+    segment: "contact-developer",
+    icon: <ForumIcon />,
   },
 ];
 

@@ -1,0 +1,1 @@
+export const djangoUrl = process.env.NEXT_PUBLIC_djangoUrl

@@ -1,11 +1,7 @@
 "use client";
-import { Button, Container, Typography, useColorScheme } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 export default function Home() {
-  const { mode, setMode } = useColorScheme();
-  if (!mode) {
-    return null;
-  }
 
   return (
     <Container
@@ -17,10 +13,7 @@ export default function Home() {
         p: 2,
       }}
     >
-      <Button onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
-        Toggle
-      </Button>
-      <Typography>{mode}</Typography>
+      <Typography>dashboard</Typography>
     </Container>
   );
 }
