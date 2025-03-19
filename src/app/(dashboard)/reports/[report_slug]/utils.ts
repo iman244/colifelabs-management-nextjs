@@ -1,6 +1,5 @@
 import { addCommas, digitsEnToFa } from "@persian-tools/persian-tools";
 import { Account, AccuralBudget, Classification, CounterParty, Transaction } from "./type";
-import { AxisValueFormatterContext } from "@mui/x-charts/internals";
 
 
 export const gperiods = (year: number) =>{return Array.from({ length: 12 }, (_, index) => {
@@ -18,10 +17,7 @@ export const accounting_display = (v: number | null)=> {
   return d
 }
 
-export const accounting_mt_display = (v: number, context: AxisValueFormatterContext ) => {
-  console.log("context", context)
-  console.log("v is", v)
-  console.log("v / 10^7", v / 10**7)
+export const accounting_mt_display = (v: number ) => {
   return accounting_display(v / 10**7)
 }
 

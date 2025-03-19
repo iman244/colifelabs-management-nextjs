@@ -1,7 +1,7 @@
 "use client";
 
-import { BarChart } from "@mui/x-charts";
-import React, { FC } from "react";
+import { BarChart, BarSeriesType } from "@mui/x-charts";
+import React, { FC, useEffect, useState } from "react";
 import { FinancialStatement } from "./type";
 import {
   accounting_display,
@@ -11,28 +11,61 @@ import {
 } from "./utils";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { Container } from "@mui/material";
+import { DatasetType, MakeOptional } from "@mui/x-charts/internals";
 
 const ReportClientPage: FC<{
   data: FinancialStatement;
 }> = ({ data }) => {
-  const year = 1404;
-  const periods = gperiods(year);
+  const [dataset, setDataset] = useState<DatasetType>([])
+  const [series, setSeries] = useState<MakeOptional<BarSeriesType, "type">[]>([])
 
-  const root = data.classifications.find((c) => c.level == 0);
-
-  if (!root) {
-    return <>root undefined</>;
-  }
-
-  console.log("root", root);
-  console.log("data.classifications", data.classifications);
-
-  const root_cal = periods.map((period) => {
-    return classifications_value_period(root.id, data.classifications, period);
-  });
-
-  console.log("root_cal", root_cal);
-
+  useEffect(()=>{
+    const year = 1404;
+    const periods = gperiods(year);
+  
+    const root = data.classifications.find((c) => c.level == 0);
+  
+  
+    console.log("root", root);
+    console.log("data.classifications", data.classifications);
+  
+    // const root_cal = periods.map((period) => {
+    //   return classifications_value_period(root.id, data.classifications, period);
+    // });
+  
+  
+    const _dataset: DatasetType = periods.map((period) => {
+      const d: {
+        [key: string]: number | string;
+      } = {
+        period,
+      };
+  
+      data.classifications.forEach((c) => {
+        d[`${c.name}`] = classifications_value_period(
+          c.id,
+          data.classifications,
+          period
+        );
+      });
+  
+      return d;
+    });
+  
+  
+    console.log("dataset", _dataset);
+    setDataset(_dataset)
+    setSeries([
+      {
+        
+        dataKey: root?.name || "",
+        label: root?.name || "",
+        valueFormatter: accounting_display,
+      },
+    ])
+  
+  },[])
+ 
   return (
     <Container
       sx={{
@@ -41,6 +74,7 @@ const ReportClientPage: FC<{
       }}
     >
       <BarChart
+        dataset={dataset}
         margin={{
           left: 80,
         }}
@@ -58,18 +92,12 @@ const ReportClientPage: FC<{
         xAxis={[
           {
             scaleType: "band",
-            data: periods,
+            dataKey: "period",
             valueFormatter: digitsEnToFa,
             label: "دوره",
           },
         ]}
-        series={[
-          {
-            data: root_cal,
-            label: root.name,
-            valueFormatter: accounting_display,
-          },
-        ]}
+        series={series}
       />
     </Container>
   );
