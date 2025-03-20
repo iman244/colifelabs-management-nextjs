@@ -2,7 +2,7 @@
 
 import { BarChart } from "@mui/x-charts";
 import React, { FC } from "react";
-import { FinancialStatement } from "./type";
+import { FinancialStatement } from "../type";
 import {
   accounting_display,
   accounting_mt_display,

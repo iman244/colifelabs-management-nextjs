@@ -16,6 +16,7 @@ export interface Classification {
   tree_id: number;
   level: number;
   parent: number | null;
+  sibiling_order: number;
 }
 
 export interface Account {
