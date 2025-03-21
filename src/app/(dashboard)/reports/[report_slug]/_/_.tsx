@@ -6,7 +6,7 @@ import { FinancialStatement } from "../type";
 import {
   accounting_display,
   accounting_mt_display,
-  classifications_value_period,
+  classification_value_period,
   gperiods,
 } from "./utils";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
@@ -28,7 +28,7 @@ export const ReportClientPage_v1: FC<{
   console.log("data.classifications", data.classifications);
 
   const root_cal = periods.map((period) => {
-    return classifications_value_period(root.id, data.classifications, period);
+    return classification_value_period(root.id, data.classifications, period);
   });
 
   console.log("root_cal", root_cal);

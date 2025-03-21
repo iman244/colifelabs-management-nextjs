@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { Classification, FinancialStatement } from "../type";
 import {
   account_value_for_period,
@@ -15,51 +15,59 @@ const ClassificationAccountDetail: FC<{
   selected_classification: Classification;
   data: FinancialStatement;
 }> = ({ data, selected_classification }) => {
-  const periods = gperiods(1404);
 
-  const childs = data.classifications.filter(
-    (c) => c.parent == selected_classification.id
-  );
+  const dataset = useMemo(()=>{
+    const periods = gperiods(1404);
 
-  const dataset: DatasetType = periods.map((period) => {
-    const d: {
-      [key: string]: number | string;
-    } = {};
-    childs.forEach((c) => {
-      d[`${c.name}`] = classification_value_period(
-        c.id,
-        data.classifications,
-        period
-      );
+    const childs = data.classifications.filter(
+      (c) => c.parent == selected_classification.id
+    );
+
+    const _dataset: DatasetType = periods.map((period) => {
+      const d: {
+        [key: string]: number | string;
+      } = {};
+      childs.forEach((c) => {
+        d[`${c.name}`] = classification_value_period(
+          c.id,
+          data.classifications,
+          period
+        );
+      });
+      selected_classification.accounts.forEach((acc) => {
+        d[`${acc.name}`] = account_value_for_period(acc, period);
+      });
+      d["period"] = period;
+      return d;
     });
-    selected_classification.accounts.forEach((acc) => {
-      d[`${acc.name}`] = account_value_for_period(acc, period);
-    });
-    d["period"] = period;
-    return d;
-  });
+    return _dataset
+  },[selected_classification])
 
-  const series: MakeOptional<BarSeriesType, "type">[] = Object.entries(
-    dataset[0]
-  )
-    .filter(([k]) => k != "period")
-    .map(([k]) => ({
-      dataKey: k,
-      label: k,
-      stack: 'a',
-      valueFormatter: accounting_display,
-    }));
-  console.log("ClassificationAccountDetail series", series);
+  const series = useMemo(()=>{
+    if(!dataset) return []
+    const series: MakeOptional<BarSeriesType, "type">[] = Object.entries(
+      dataset[0]
+    )
+      .filter(([k]) => k != "period")
+      .map(([k]) => ({
+        dataKey: k,
+        label: k,
+        stack: "a",
+        valueFormatter: accounting_display,
+      }));
+      return series
+  },[dataset])
+
+
 
   return (
     <BarChart
       dataset={dataset}
-      height={300}
+      height={400}
       margin={{
         left: 80,
       }}
       sx={{
-        marginTop: "40px",
         ".MuiChartsAxis-directionY .MuiChartsAxis-label": {
           transform: "translate(20px)", // Add left margin
         },

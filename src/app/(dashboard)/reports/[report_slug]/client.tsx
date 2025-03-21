@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { DatasetType } from "@mui/x-charts/internals";
 import ClassificationAccountDetail from "./_/ClassificationAccountDetail";
+import TransactionDetail from "./_/TransactionDetail";
 
 const ReportClientPage: FC<{
   data: FinancialStatement;
@@ -61,16 +62,16 @@ const ReportClientPage: FC<{
     const root = data.classifications.find((c) => c.level == 0);
     if (root) {
       setSelectedClassification(root);
-      setSeries(root.name)
+      setSeries(root.name);
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const root = data.classifications.find((c) => c.name == series);
     if (root) {
       setSelectedClassification(root);
     }
-  }, [series])
+  }, [series]);
 
   const cs = data.classifications.sort((a, b) => {
     if (a.level != b.level) {
@@ -93,11 +94,13 @@ const ReportClientPage: FC<{
         width: "100%",
       }}
     >
-      <SelectClassification
-        classifications={cs}
-        series={series}
-        setSeries={setSeries}
-      />
+      <Box sx={{ minWidth: 120, mb: "40px" }}>
+        <SelectClassification
+          classifications={cs}
+          series={series}
+          setSeries={setSeries}
+        />
+      </Box>
       <BarChart
         dataset={dataset || []}
         height={300}
@@ -105,7 +108,6 @@ const ReportClientPage: FC<{
           left: 80,
         }}
         sx={{
-          marginTop: "40px",
           ".MuiChartsAxis-directionY .MuiChartsAxis-label": {
             transform: "translate(20px)", // Add left margin
           },
@@ -134,11 +136,44 @@ const ReportClientPage: FC<{
       />
 
       {selectedClassification && (
-        <ClassificationAccountDetail
-          selected_classification={selectedClassification}
-          data={data}
-        />
+        <Container
+          sx={{
+            my: "20px",
+          }}
+        >
+          <Typography
+            sx={{
+              my: "20px",
+              textAlign: 'center'
+            }}
+          >
+            حساب‌های زیرمجموعه {selectedClassification.name}
+          </Typography>
+          <ClassificationAccountDetail
+            selected_classification={selectedClassification}
+            data={data}
+          />
+        </Container>
       )}
+      {selectedClassification &&
+        selectedClassification.accounts.map((a) => (
+          <Container
+            key={a.id}
+            sx={{
+              my: "20px",
+            }}
+          >
+            <Typography
+              sx={{
+                my: "20px",
+                textAlign: 'center'
+              }}
+            >
+              جزئیات حساب {a.name}
+            </Typography>
+            <TransactionDetail account={a} />
+          </Container>
+        ))}
     </Container>
   );
 };
@@ -162,33 +197,31 @@ const SelectClassification: FC<{
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">طبقه‌بندی</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={series}
-          label="انتخاب"
-          onChange={handleChange}
-          variant="filled"
-        >
-          {classifications.map((c) => (
-            <MenuItem
-              key={c.id}
-              value={c.name}
-              sx={{
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography>{c.name}</Typography>
-              <Typography>
-                {accounting_mt_display(c.accural_budgets_value)}
-              </Typography>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+    <FormControl fullWidth>
+      <InputLabel id="demo-simple-select-label">طبقه‌بندی</InputLabel>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={series}
+        label="انتخاب"
+        onChange={handleChange}
+        variant="filled"
+      >
+        {classifications.map((c) => (
+          <MenuItem
+            key={c.id}
+            value={c.name}
+            sx={{
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography>{c.name}</Typography>
+            <Typography>
+              {accounting_mt_display(c.accural_budgets_value)}
+            </Typography>
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
