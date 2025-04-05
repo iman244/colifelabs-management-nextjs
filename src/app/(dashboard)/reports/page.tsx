@@ -18,7 +18,7 @@ type FinancialStatement = {
 
 const ReportsPage = async () => {
   const data = await fetch(djangoUrl + "/budgets/financial-statements/", {
-    next: { revalidate: 30 },
+    next: { revalidate: 0 },
   });
   if(data.ok === false) {
     console.log("response financial-statement", data)
@@ -30,8 +30,6 @@ const ReportsPage = async () => {
   return (
  <Grid container spacing={3} justifyContent="center">
       {financialStatements.map(({ id, name, material_ui_icon, slug }) => {
-
-
         return (
           <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={id}>
             <Link href={`/reports/${slug}`}>

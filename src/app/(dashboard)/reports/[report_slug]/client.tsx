@@ -1,6 +1,5 @@
 "use client";
 
-import { BarChart } from "@mui/x-charts";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Classification, FinancialStatement } from "./type";
 import {
@@ -9,7 +8,6 @@ import {
   classification_value_period,
   gperiods,
 } from "./_/utils";
-import { digitsEnToFa } from "@persian-tools/persian-tools";
 import {
   Container,
   Box,
@@ -23,6 +21,7 @@ import {
 import { DatasetType } from "@mui/x-charts/internals";
 import ClassificationAccountDetail from "./_/ClassificationAccountDetail";
 import TransactionDetail from "./_/TransactionDetail";
+import SimpleBarChart from "@/charts/SimpleBarChart";
 
 const ReportClientPage: FC<{
   data: FinancialStatement;
@@ -101,31 +100,8 @@ const ReportClientPage: FC<{
           setSeries={setSeries}
         />
       </Box>
-      <BarChart
+      <SimpleBarChart
         dataset={dataset || []}
-        height={300}
-        margin={{
-          left: 80,
-        }}
-        sx={{
-          ".MuiChartsAxis-directionY .MuiChartsAxis-label": {
-            transform: "translate(20px)", // Add left margin
-          },
-        }}
-        yAxis={[
-          {
-            label: "میلیون تومان",
-            valueFormatter: accounting_mt_display,
-          },
-        ]}
-        xAxis={[
-          {
-            scaleType: "band",
-            dataKey: "period",
-            valueFormatter: digitsEnToFa,
-            label: "دوره",
-          },
-        ]}
         series={[
           {
             dataKey: series,
@@ -144,7 +120,7 @@ const ReportClientPage: FC<{
           <Typography
             sx={{
               my: "20px",
-              textAlign: 'center'
+              textAlign: "center",
             }}
           >
             حساب‌های زیرمجموعه {selectedClassification.name}
@@ -166,7 +142,7 @@ const ReportClientPage: FC<{
             <Typography
               sx={{
                 my: "20px",
-                textAlign: 'center'
+                textAlign: "center",
               }}
             >
               جزئیات حساب {a.name}

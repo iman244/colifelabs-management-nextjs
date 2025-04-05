@@ -3,7 +3,7 @@ import { FinancialStatement } from "./type";
 import { djangoUrl } from "@/django_api";
 import ReportClientPage from "./client";
 
-export const revalidate = 60;
+export const revalidate = 0;
 export const dynamicParams = true; // or false, to 404 on unknown paths
 const data_url = djangoUrl + "/budgets/financial-statements/";
 
